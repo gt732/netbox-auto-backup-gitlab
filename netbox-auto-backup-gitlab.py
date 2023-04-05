@@ -23,7 +23,7 @@ def retrieve_backup():
     InventoryPluginRegister.register("CsvInventoryPlugin", CsvInventory)
 
     nr = InitNornir(
-        config_file="/home/bob/bob-netbox/inventory/config.yaml"
+        config_file="./inventory/config.yaml"
     )
     results = nr.run(task=napalm_get, getters=['get_config'])
     print('*' * 100)
@@ -31,7 +31,7 @@ def retrieve_backup():
     for device, multi_result in results.items():
         if multi_result[0].failed == False:
             config = multi_result[0].result['get_config']['running']
-            with open(f'/home/bob/bob-netbox/networking/network-backups/cisco/{device}/{device}-{month}-{day}-{year}-{sec}', 'w') as f:
+            with open(f'./networking/network-backups/cisco/{device}/{device}-{month}-{day}-{year}-{sec}', 'w') as f:
                 f.write(config)
         else:
             rprint(
@@ -43,7 +43,7 @@ def git_push():
     print('*' * 100)
     rprint('[yellow]Pushing configs to Gitlab.[/yellow]')
     print('*' * 100)
-    os.chdir('/home/bob/bob-netbox/networking')
+    os.chdir('./networking')
     os.system('git add .')
     add_result = os.system('git add .')
     if add_result != 0:
@@ -69,7 +69,7 @@ def netbox_get_devices():
         response = requests.get(url, headers=headers).json()
         print('*' * 100)
         rprint('[yellow]Getting Devices from Netbox Inventory.[/yellow]')
-        with open('/home/bob/bob-netbox/inventory/hosts.csv', 'w', encoding='UTF8', newline='') as file:
+        with open('./inventory/hosts.csv', 'w', encoding='UTF8', newline='') as file:
             header = ['name', 'hostname', 'platform']
             writer = csv.writer(file)
             writer.writerow(header)

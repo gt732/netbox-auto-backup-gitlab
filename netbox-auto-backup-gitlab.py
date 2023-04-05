@@ -9,8 +9,8 @@ from datetime import datetime
 import os
 import time
 
-netbox_endpoint = 'netbox-lab-demo.com'
-api_token = 'XXXXXXXXXXXXXXXXXXXXXXXXXX'
+netbox_endpoint = os.environ.get('NETBOX_ENDPOINT')
+api_token = os.environ.get('API_TOKEN')
 
 now = datetime.now()
 year = now.year
